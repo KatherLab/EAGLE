@@ -428,7 +428,7 @@ def main():
                         help="Patch encoder name used for aggregation")
     parser.add_argument("-e", "--h5_name", type=str, required=False, default="eagle_feats.h5",
                         help="Output HDF5 file name")
-    parser.add_argument("-r", "--microns", type=int, required=False, default=256
+    parser.add_argument("-r", "--microns", type=int, required=False, default=256,
                         help="Microns per patch used for extraction")
     parser.add_argument("-s", "--slide_table", type=str, required=False,
                         help="Slide table path (for patient-level extraction)")
