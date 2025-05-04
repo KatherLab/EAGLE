@@ -3,7 +3,7 @@ h5py~=3.10
 torch~=2.2
 tqdm~=4.66
 pillow~=10.3.0
-timm>=0.9.11
+timm==0.5.4
 huggingface_hub~=0.23.4
 openai~=1.59.6
 scikit-learn~=1.3
