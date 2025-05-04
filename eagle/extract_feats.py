@@ -98,17 +98,17 @@ def get_eagle_feats(model, patch_feats_w, patch_feats_a, top_k=25):
         torch.Tensor: The aggregated EAGLE features as a 1D tensor.
     """
     with torch.inference_mode():
-        A = model(patch_feats_w, get_attention=True)
-        # A.shape: (1,1,num_patches)
+        A = model(patch_feats_w)["attention_raw"]
+        # A.shape: (1,num_patches)
         if top_k:
             if A.size(-1) < top_k:
                 top_k = A.size(-1)
-            top_k_indices = torch.topk(A, top_k, dim=-1).indices  # (1,1,top_k)
+            top_k_indices = torch.topk(A, top_k, dim=-1).indices  # (1,top_k)
             # Gather corresponding features from patch_feats_a
-            top_k_x = patch_feats_a.gather(1, top_k_indices.squeeze(0).unsqueeze(-1).expand(-1, -1, patch_feats_a.size(-1)))
+            top_k_x = patch_feats_a.gather(1, top_k_indices.unsqueeze(-1).expand(-1, -1, patch_feats_a.size(-1)))
             eagle_feats = top_k_x.mean(dim=1)
         else:
-            eagle_feats = torch.bmm(A, patch_feats_a).squeeze(1)
+            eagle_feats = torch.bmm(A.unsqueeze(0), patch_feats_a).squeeze(1)
     return eagle_feats.squeeze(0)
 
 def save_chunk(
