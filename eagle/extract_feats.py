@@ -98,7 +98,7 @@ def get_eagle_feats(model, patch_feats_w, patch_feats_a, top_k=25):
         torch.Tensor: The aggregated EAGLE features as a 1D tensor.
     """
     with torch.inference_mode():
-        A = model(patch_feats_w)["attention_raw"]
+        A = model(patch_feats_w.squeeze(0))["attention_raw"]
         # A.shape: (1,num_patches)
         if top_k:
             if A.size(-1) < top_k:
